@@ -13,11 +13,11 @@ import java.util.StringTokenizer;
 /**
  * Created by manuelernesto on 26/05/16.
  */
-public class ContactoDAO extends SQLiteOpenHelper{
+public class ContactoDAO extends SQLiteOpenHelper {
 
 
-    public ContactoDAO(Context context){
-        super(context, "MeusContactos",null, 1);
+    public ContactoDAO(Context context) {
+        super(context, "MeusContactos", null, 1);
     }
 
     @Override
@@ -37,25 +37,25 @@ public class ContactoDAO extends SQLiteOpenHelper{
 
     }
 
-    public void salvar(Contacto contacto){
+    public void salvar(Contacto contacto) {
         ContentValues dados = contacto.conteudo();
 
         SQLiteDatabase database = getWritableDatabase();
-        database.insert("contacto",null,dados);
+        database.insert("contacto", null, dados);
     }
 
-    public List<Contacto> listarTodos(){
+    public List<Contacto> listarTodos() {
         List<Contacto> contactos = new ArrayList<>();
         SQLiteDatabase database = getReadableDatabase();
-       Cursor cursor = database.rawQuery("SELECT * FROM contacto", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM contacto", null);
 
-        while (cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndex("id"));
             String nome = cursor.getString(cursor.getColumnIndex("nome"));
             String telefone = cursor.getString(cursor.getColumnIndex("telefone"));
             String email = cursor.getString(cursor.getColumnIndex("email"));
 
-            Contacto contacto = new Contacto(id,nome,telefone,email);
+            Contacto contacto = new Contacto(id, nome, telefone, email);
 
             contactos.add(contacto);
         }
@@ -63,17 +63,18 @@ public class ContactoDAO extends SQLiteOpenHelper{
         return contactos;
     }
 
-    public void actualizar(Contacto contacto, int id){
+    /*Metodo para actualizar os contactos na base de dados*/
+    public void actualizar(Contacto contacto, int id) {
         ContentValues dados = contacto.conteudo();
         String[] parametro = {id + ""};
         SQLiteDatabase database = getWritableDatabase();
-        database.update("contacto",dados,"id = ?",parametro);
+        database.update("contacto", dados, "id = ?", parametro);
     }
 
-    public void apagar (Contacto contacto){
+    public void apagar(Contacto contacto) {
         String[] parametro = {contacto.getId() + ""};
         SQLiteDatabase database = getWritableDatabase();
-        database.delete("contacto","id = ?",parametro);
+        database.delete("contacto", "id = ?", parametro);
     }
 
 }
